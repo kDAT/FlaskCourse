@@ -120,5 +120,17 @@ The user can be accessed from the post by `post.author`
 To clear the database, use: `db.drop_all()`, this will need to be 
 reconstructed by `db.create_all()`
 
+5. ###### Package Structure
+
+To create a package, need a folder with the same name of the project
+and a file: `__init__.py`
+
+Move every file and directory, except the main file (`flaskblog.py`) to the package
+
+new files to models and routs, inside the package
+
+rename `flaskblog.py` to `run.py`
+
+
 
 
