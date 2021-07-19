@@ -64,4 +64,61 @@ To display a message, use: `flash(f'Account created for {form.username.data}!', 
 
 To redirect: use `return redirect(url_for('home'))`
 
+4. ###### Database with Flask-SQLAlchemy
+
+`from flask_sqlalchemy import SQLAlchemy` to import SQLAlchemy
+
+`app.config['SQLALCHEMY_DATABASE_URI'] = 'db.create_all()` config teh app with the database
+
+`db = SQLAlchemy(app)` to bind an instance of the app
+
+The Models are classes that extend `db.Model`
+
+each variable is a `db.Column`, with specific attributes
+
+`primary_key` Used on the id Column to set a id
+
+`unique=True` Can not repeat values
+
+`nullable=False` Can not be empty
+
+`default=` specify a default value
+
+`posts = db.relationship('Post', backref='author', lazy=True)`
+To connect the models
+
+`backref='author'` A 'Column' on Post to reference the User
+
+On the python console:
+
+`db.create_all()` creates the file on `sqlite:///site.db`
+
+`user_1 = User(username='DaT', email='a@b.com', password='asdf')`
+Creates a new user.
+
+`db.session.add(user_1)` to add the user to the database
+
+`db.session.commit()` to commit the database to the file
+
+`User.query.` to get the elements
+
+Options of query:
+
+`.all()` all
+
+`.first()` first
+
+`.filter_by(username='DaT').all()` to filter by a specific
+parameter
+
+The query can be saved on a variable
+
+`.get(id)` get from the id
+
+The user can be accessed from the post by `post.author`
+
+To clear the database, use: `db.drop_all()`, this will need to be 
+reconstructed by `db.create_all()`
+
+
 
