@@ -131,6 +131,61 @@ new files to models and routs, inside the package
 
 rename `flaskblog.py` to `run.py`
 
+6. ###### User Authentication
 
+For better encryption, use flask-bcrypt
+`from flask-bcrypt import Bcrypt`
 
+To use it, create an instance: `bcrypt = Bcrypt()`
+
+To generate a hash: `hashed_pw = bcrypt.generate_password_hash('the_password')`
+this returns a binary, to get a string, just add `.decode('utf-8')` at the end
+
+To check a password: `bcrypt.check_password_hash(hashed_pw, 'the_password')` which returns a boolean
+
+On the project, initialize Bcrypt on the init file, importing and creating the instance with `Bcrypt(app)`
+
+Now, on the routs, from the main package, import db and bcrypt
+
+On the register rout, hash the password from the form and create a new User with the form information,
+then just add to the database and commit it.
+
+To prevent a user of creating an account with the same username or email, we can add validation methods on the forms
+
+To deal with sessions, use the `flask-login` and on init:
+`from flask_login import LoginManager` and `login_manager = LoginManager(app)`
+
+Now it is possible to get the user session, with a method
+that has a decorator `@login_manager.user_loader`
+
+Is expected from the User model some attributes:
+isAuthenticated, isActive, isAnonymous and getId
+
+Instead of adding these methods, we can import the class `UserMixin` from `flask_login`
+
+Now just extend UserMixin on the User class
+
+Now on login in the rout:
+
+from the form, we can query a user, check if exist and compare the passwords,
+if correct, use login_user (from flask_login), with the user and the remember option from the form.
+
+To prevent the user from login again, we can use current_user (from flask_login)
+to check if the current user is authenticated.
+
+To logout, we need the logout_user (from flask_login),
+and we need another rout, and add the logout_user() function
+with a return redirect to the home page
+
+Also, we need to change the layout, to show a logout button
+
+To prevent the user from accessing some routs, without been login, 
+we can use login_required (from flask_login), and add on the route as a decorator.
+
+To define the login route, on init we can set the login route with:
+`login_manager.login_view = 'login'`
+
+To redirect from a previous page, use request (from flask).
+On the login route, after the user login, we can use the request method:
+`next_page = request.args.get('next')`
 
