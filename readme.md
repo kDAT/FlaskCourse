@@ -189,3 +189,20 @@ To redirect from a previous page, use request (from flask).
 On the login route, after the user login, we can use the request method:
 `next_page = request.args.get('next')`
 
+7. ###### User Account and Profile Picture 
+
+To update the parameter of a User, just set the current_user info, like:
+`current_user.username = form.username.data` followed by a commit on the database
+`db.session.commit()`
+
+To work with image files, we need `from flask_wtf.file import FileField, FileAllowed`
+
+Now, is possible to add an image field to the update account form
+using the FileAllowed validator for the file extensions
+
+In the database, the name of the image is updated, to save the image
+use .save(the_path) on the form.picture.data, or use Pillow Image to resize it first.
+
+
+
+
