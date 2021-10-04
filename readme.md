@@ -68,7 +68,7 @@ To redirect: use `return redirect(url_for('home'))`
 
 `from flask_sqlalchemy import SQLAlchemy` to import SQLAlchemy
 
-`app.config['SQLALCHEMY_DATABASE_URI'] = 'db.create_all()` config teh app with the database
+`app.config['SQLALCHEMY_DATABASE_URI'] = 'db.create_all()'` config the app with the database
 
 `db = SQLAlchemy(app)` to bind an instance of the app
 
@@ -163,24 +163,24 @@ isAuthenticated, isActive, isAnonymous and getId
 
 Instead of adding these methods, we can import the class `UserMixin` from `flask_login`
 
-Now just extend UserMixin on the User class
+Now just extend `UserMixin` on the User class
 
 Now on login in the rout:
 
 from the form, we can query a user, check if exist and compare the passwords,
-if correct, use login_user (from flask_login), with the user and the remember option from the form.
+if correct, use `login_user` (from flask_login), with the user and the remember option from the form.
 
-To prevent the user from login again, we can use current_user (from flask_login)
+To prevent the user from login again, we can use `current_user` (from flask_login)
 to check if the current user is authenticated.
 
-To logout, we need the logout_user (from flask_login),
-and we need another rout, and add the logout_user() function
+To logout, we need the `logout_user` (from flask_login),
+and we need another rout, and add the `logout_user()` function
 with a return redirect to the home page
 
 Also, we need to change the layout, to show a logout button
 
 To prevent the user from accessing some routs, without been login, 
-we can use login_required (from flask_login), and add on the route as a decorator.
+we can use `login_required` (from flask_login), and add on the route as a decorator.
 
 To define the login route, on init we can set the login route with:
 `login_manager.login_view = 'login'`
@@ -198,11 +198,35 @@ To update the parameter of a User, just set the current_user info, like:
 To work with image files, we need `from flask_wtf.file import FileField, FileAllowed`
 
 Now, is possible to add an image field to the update account form
-using the FileAllowed validator for the file extensions
+using the `FileAllowed` validator for the file extensions
 
 In the database, the name of the image is updated, to save the image
-use .save(the_path) on the form.picture.data, or use Pillow Image to resize it first.
+use `.save(the_path)` on the form.picture.data, or use Pillow Image to resize it first.
 
+8. ###### Create, Update, and Delete Posts
 
+New route in /post/new with login_required for new posts
 
+New form, with TextAreaField for the content of the post
 
+On the route, when creating a new `Post()`, from the data of the form, 
+is possible to specify the author with the `current_user`
+
+To display the profile picture of the author on the post, define a `<img >`
+with the source as `src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"`
+
+Is possible to set a variable on the route with `<>`, and inside it, 
+specify the variable type with `<type:variablename>`, e.g, `<int:post_id>`
+
+The variable can now be passed to the function
+
+To query from the db and test if exists, use `get_or_404(id)`
+
+To abort with an error, use the abort from flask, with the number 
+corresponding to the error, `abort(403)`
+
+To populate a form, first check if the request is a GET, with
+`elif request.method == 'GET':`
+
+to delete something from the data base, use `db.session.delete(post)`,
+followed by a `db.session.commit()`
