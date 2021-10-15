@@ -230,3 +230,28 @@ To populate a form, first check if the request is a GET, with
 
 to delete something from the data base, use `db.session.delete(post)`,
 followed by a `db.session.commit()`
+
+9. ###### Pagination
+
+The pagination is done during the query, with `Post.query.paginate()`,
+which has some attributes like per_page (default is 20),
+page which indicates the page and some others
+
+But now to get access to the items, use `posts.items`
+
+To acces the second page, add in the URL: `?page=2`
+
+To iterate between pages, use `post.iter_pages()`,
+which can have some arguments: 
+
+`left_edge=` how many items on the left
+
+`right_edge=` how many items on the right
+
+`left_current=` how many item on the left of the current page
+
+`right_current=` how many items on the right plus the current page
+
+To order the post by date, use `order_by(Post.date_posted.desc())`,
+before the `paginate()`
+
